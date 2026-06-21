@@ -1,0 +1,1 @@
+export { MatchPredictionForm } from "./MatchPredictionForm";

@@ -1,0 +1,1 @@
+export { FanAccoladesBoard } from "./FanAccoladesBoard";

@@ -1,0 +1,40 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.linkRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.linkInput {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(244, 236, 218, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.error {
+  margin: 0;
+  color: var(--color-danger, #e57373);
+  font-size: var(--text-sm);
+}
+
+.success {
+  margin: 0;
+  color: var(--color-pitch-green-light, #7cb342);
+  font-size: var(--text-sm);
+}

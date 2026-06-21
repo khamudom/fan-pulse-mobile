@@ -1,0 +1,131 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.sectionHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.sectionTitle {
+  font-size: var(--text-2xl);
+  margin: 0;
+}
+
+.sectionDesc {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+}
+
+.groupGrid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .groupGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.secondSelect {
+  margin-top: var(--space-4);
+}
+
+.bracketSection {
+  padding: var(--space-6);
+  background: var(--color-bg);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+}
+
+.bracketHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.bracketActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.signInAlert,
+.saveAlert {
+  margin-top: var(--space-4);
+}
+
+.saveRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.bracket {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+}
+
+.bracketRound h3 {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bracketRound ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.championSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 400px;
+}
+
+.confirmation {
+  border-color: var(--color-success);
+  background: rgba(22, 163, 74, 0.05);
+}
+
+.confirmTitle {
+  font-size: var(--text-xl);
+  color: var(--color-success);
+  margin-bottom: var(--space-3);
+}
+
+.confirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.stat {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

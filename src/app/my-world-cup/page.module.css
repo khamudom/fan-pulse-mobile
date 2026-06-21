@@ -1,0 +1,12 @@
+.narrow {
+  max-width: var(--layout-narrow);
+}
+
+.backLink {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.backLink a {
+  text-decoration: none;
+}

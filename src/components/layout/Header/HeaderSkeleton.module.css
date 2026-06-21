@@ -1,0 +1,23 @@
+.navPlaceholder {
+  display: none;
+  flex: 1;
+  max-width: 28rem;
+  height: 2rem;
+  margin-inline: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(244, 236, 218, 0.08);
+}
+
+.userPlaceholder {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background: rgba(244, 236, 218, 0.08);
+  flex-shrink: 0;
+}
+
+@media (min-width: 900px) {
+  .navPlaceholder {
+    display: block;
+  }
+}

@@ -1,0 +1,188 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background: var(--color-pitch-night);
+  border-bottom: 1px solid rgba(244, 236, 218, 0.08);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: var(--layout-max);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  height: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--color-text-inverse);
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: var(--text-lg);
+}
+
+.logoMark {
+  font-size: var(--text-xl);
+}
+
+.logoAccent {
+  color: var(--color-trophy-gold);
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink,
+.navLinkActive {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(244, 236, 218, 0.65);
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+.navLink:hover {
+  color: var(--color-text-inverse);
+  background: rgba(244, 236, 218, 0.06);
+}
+
+.navLinkActive {
+  color: var(--color-trophy-gold);
+}
+
+.navBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.3rem;
+  margin-left: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--color-trophy-gold);
+  color: var(--color-pitch-night);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.menuToggleWrap {
+  display: flex;
+  align-items: center;
+}
+
+.menuToggle {
+  --lumen-button-color: var(--color-text-inverse);
+  --lumen-button-hover-bg: rgba(244, 236, 218, 0.08);
+  --lumen-button-hover-color: var(--color-text-inverse);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+
+.menuToggleIcon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .menuToggleWrap {
+    display: none;
+  }
+
+  .nav {
+    display: block;
+  }
+}
+
+@media (max-width: 899px) {
+  .nav {
+    display: grid;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    background: var(--color-pitch-night);
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    pointer-events: none;
+    transition:
+      grid-template-rows 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .navOpen {
+    grid-template-rows: 1fr;
+    border-bottom-color: rgba(244, 236, 218, 0.08);
+    box-shadow: var(--shadow-md);
+    pointer-events: auto;
+  }
+
+  .navList {
+    overflow: hidden;
+    min-height: 0;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 var(--space-4);
+    transition: padding 0.3s ease;
+  }
+
+  .navOpen .navList {
+    padding: var(--space-4);
+  }
+
+  .navLink,
+  .navLinkActive {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}

@@ -1,0 +1,22 @@
+.hero {
+  min-height: 180px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  width: 14rem;
+  height: 1.75rem;
+  margin-bottom: var(--space-6);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.card {
+  min-height: 120px;
+  border-radius: var(--radius-lg);
+}

@@ -1,0 +1,55 @@
+.card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.groupBadge {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 1;
+}
+
+.header {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding-top: var(--space-8) !important;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.footer {
+  justify-content: center;
+  margin-top: auto;
+}
+
+.ctaButton {
+  width: 100%;
+}
+
+.flag {
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.flagPlaceholder {
+  width: 48px;
+  height: 36px;
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.code {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

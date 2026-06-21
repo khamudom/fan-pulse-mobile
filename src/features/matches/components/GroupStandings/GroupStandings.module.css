@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.teamCell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.teamCell img {
+  border-radius: 2px;
+}

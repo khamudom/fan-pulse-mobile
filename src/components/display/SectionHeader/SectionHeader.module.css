@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.subtitle {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  max-width: 50ch;
+}

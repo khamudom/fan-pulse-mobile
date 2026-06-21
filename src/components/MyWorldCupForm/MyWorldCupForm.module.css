@@ -1,0 +1,53 @@
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.fieldGroup {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.fieldLabel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.players {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  font-weight: 600;
+  padding: 0 var(--space-2);
+}
+
+.playerGrid {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.error {
+  color: var(--color-live);
+  font-size: var(--text-sm);
+}
+
+.success {
+  color: var(--color-success);
+  font-size: var(--text-sm);
+}

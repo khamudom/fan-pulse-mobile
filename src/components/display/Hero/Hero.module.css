@@ -1,0 +1,224 @@
+.hero {
+  position: relative;
+  background: var(--color-hero-bg);
+  color: var(--color-text-inverse);
+  padding: var(--space-16) 0 var(--space-12);
+  overflow: hidden;
+}
+
+.hasBackground {
+  background: var(--color-hero-bg);
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0.45;
+}
+
+.backgroundImagePhoto {
+  object-fit: cover;
+  object-position: center right;
+}
+
+.backgroundImageFullWidth {
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.72) contrast(0.9) brightness(0.78);
+  transform: scale(1.04);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(8, 19, 16, 0.68);
+}
+
+@media (min-width: 768px) {
+  .backgroundImage:not(.backgroundImageFullWidth):not(.backgroundImagePhoto) {
+    object-fit: contain;
+    object-position: 100% center;
+  }
+
+  .backgroundOverlay {
+    background: linear-gradient(
+      90deg,
+      var(--color-hero-bg) 0%,
+      var(--color-hero-bg) 52%,
+      rgba(8, 19, 16, 0.96) 60%,
+      rgba(8, 19, 16, 0.86) 68%,
+      rgba(8, 19, 16, 0.78) 100%
+    );
+  }
+}
+
+.backgroundOverlayFullWidth {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 19, 16, 0.82);
+}
+
+.compact {
+  padding: var(--space-10) 0 var(--space-8);
+}
+
+.centered .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.centered .title {
+  max-width: none;
+  width: 100%;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: normal;
+}
+
+.centered .subtitle {
+  max-width: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--layout-max);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.withAside {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.withBackground {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .withBackground {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .withBackground .content {
+    grid-column: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .withAside {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .withWideAside {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: center;
+  }
+
+  .withBackground.withAside {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.content {
+  min-width: 0;
+}
+
+.aside {
+  min-width: 0;
+}
+
+.sponsor {
+  font-size: var(--text-sm);
+  opacity: 0.85;
+  margin-bottom: var(--space-4);
+}
+
+.sponsor strong {
+  color: var(--color-accent-muted);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+  max-width: 16ch;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-4);
+  font-size: clamp(var(--text-lg), 2.5vw, var(--text-xl));
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-trophy-gold-light);
+  margin-bottom: var(--space-3);
+  max-width: 28ch;
+}
+
+.subtitle {
+  font-size: clamp(var(--text-lg), 2.5vw, var(--text-xl));
+  opacity: 0.9;
+  max-width: 42ch;
+  margin-bottom: var(--space-8);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+.actions :global(.lumen-button--primary) {
+  --lumen-button-bg: var(--color-pitch-green);
+  --lumen-button-color: var(--color-pitch-night);
+  --lumen-button-hover-bg: var(--color-primary-hover);
+}
+
+.actions :global(.lumen-button--outline) {
+  --lumen-button-bg: transparent;
+  --lumen-button-color: var(--color-text-inverse);
+  --lumen-button-border: rgba(255, 255, 255, 0.85);
+  --lumen-button-hover-bg: rgba(255, 255, 255, 0.1);
+  --lumen-button-hover-color: var(--color-text-inverse);
+  --lumen-button-hover-border: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding: 0 var(--space-6);
+  }
+}

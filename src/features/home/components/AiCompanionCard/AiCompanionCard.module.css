@@ -1,0 +1,108 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 34rem;
+  min-width: 0;
+  border-color: rgba(244, 236, 218, 0.1) !important;
+  background: rgba(15, 31, 24, 0.75) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card :global(.lumen-card-title) {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.cardHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-right: var(--space-8);
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding-right: var(--space-8);
+}
+
+.prompts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.prompts button {
+  white-space: normal;
+  text-align: left;
+  height: auto;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .form {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+}
+
+.form :global(.lumen-button--primary) {
+  --lumen-button-bg: var(--color-pitch-green);
+  --lumen-button-color: var(--color-pitch-night);
+  --lumen-button-hover-bg: var(--color-primary-hover);
+}
+
+.hint,
+.error {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.error {
+  color: var(--color-broadcast-red);
+}
+
+.response {
+  flex: 1;
+  min-height: 0;
+  margin-top: var(--space-4);
+  overflow-y: auto;
+  padding: var(--space-4);
+  background: rgba(8, 19, 16, 0.5);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(244, 236, 218, 0.1);
+}
+
+.responseLabel {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-trophy-gold);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.responseText {
+  font-family: var(--font-ui);
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: var(--color-text-inverse);
+}

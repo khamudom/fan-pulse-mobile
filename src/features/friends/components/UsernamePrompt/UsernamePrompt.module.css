@@ -1,0 +1,28 @@
+.prompt {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.hint {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.error {
+  margin: 0;
+  color: var(--color-danger, #e57373);
+  font-size: var(--text-sm);
+}
+
+.card {
+  border-color: rgba(244, 236, 218, 0.1) !important;
+  background: rgba(15, 31, 24, 0.75) !important;
+}

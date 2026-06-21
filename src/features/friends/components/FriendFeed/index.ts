@@ -1,0 +1,1 @@
+export { FriendFeed } from "./FriendFeed";

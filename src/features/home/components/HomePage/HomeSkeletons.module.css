@@ -1,0 +1,26 @@
+.heroSkeleton {
+  padding: var(--space-10) 0 var(--space-6);
+}
+
+.fixturesHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.titleBlock,
+.actionsBlock {
+  height: 3rem;
+  border-radius: var(--radius-lg);
+  background: rgba(244, 236, 218, 0.08);
+}
+
+.titleBlock {
+  width: min(100%, 16rem);
+}
+
+.actionsBlock {
+  width: min(100%, 10rem);
+}

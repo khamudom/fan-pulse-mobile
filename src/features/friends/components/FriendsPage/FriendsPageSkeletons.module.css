@@ -1,0 +1,9 @@
+.tabPlaceholder {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(244, 236, 218, 0.12);
+  color: rgba(244, 236, 218, 0.35);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}

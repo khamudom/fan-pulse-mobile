@@ -1,0 +1,1 @@
+export { ViewFriendLink } from "./ViewFriendLink";

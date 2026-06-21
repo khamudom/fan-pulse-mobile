@@ -1,0 +1,1 @@
+export { MyWorldCupForm } from "./MyWorldCupForm";

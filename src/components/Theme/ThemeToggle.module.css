@@ -1,0 +1,25 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  --lumen-button-color: var(--color-text-inverse);
+  --lumen-button-hover-bg: rgba(255, 255, 255, 0.08);
+  --lumen-button-hover-color: var(--color-text-inverse);
+}
+
+.icon {
+  font-size: var(--text-base);
+  line-height: 1;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .label {
+    display: none;
+  }
+}

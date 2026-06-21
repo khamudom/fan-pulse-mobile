@@ -1,0 +1,40 @@
+.grid {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.accolades {
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.stats {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.label {
+  display: block;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.links a {
+  color: var(--color-primary);
+  font-weight: 600;
+}

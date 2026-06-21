@@ -1,0 +1,1 @@
+export { MatchDetailView } from "./MatchDetailView";

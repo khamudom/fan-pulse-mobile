@@ -1,0 +1,228 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.progress {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.picksGuide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.instructions {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  max-width: 42rem;
+}
+
+.bracketScroll {
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+}
+
+.bracketGrid {
+  display: flex;
+  gap: var(--space-4);
+  min-width: max-content;
+  align-items: stretch;
+}
+
+.roundColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 11.5rem;
+}
+
+.roundTitle {
+  margin: 0;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.roundMatches {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: var(--space-3);
+  flex: 1;
+  min-height: calc(var(--match-count, 1) * 5.5rem);
+}
+
+.matchCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.matchCardPickable {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.matchCardHighlighted {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.matchCardPicked {
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+.matchHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.matchId {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.pickHint {
+  font-size: 0.65rem;
+  color: rgba(59, 130, 246, 0.9);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.matchDate {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.matchBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.participant {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+}
+
+.participant + .participant {
+  border-top: 1px solid var(--color-border);
+}
+
+.participantSelectable {
+  cursor: pointer;
+}
+
+.participantSelectable:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.participantSelected {
+  background: rgba(59, 130, 246, 0.18);
+  font-weight: 600;
+}
+
+.participantDimmed {
+  opacity: 0.45;
+}
+
+.advanceMark {
+  color: rgba(59, 130, 246, 0.95);
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.participantWinner {
+  background: rgba(22, 163, 74, 0.08);
+  font-weight: 600;
+}
+
+.participantPlaceholder .participantName {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.participantName {
+  flex: 1;
+  font-size: var(--text-sm);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score {
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.flag,
+.flagPlaceholder {
+  width: 1.25rem;
+  height: 0.875rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.flagPlaceholder {
+  display: inline-block;
+  background: var(--color-border);
+}
+
+.matchFooter {
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.championBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.championLabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modeToggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (min-width: 1024px) {
+  .roundColumn {
+    min-width: 13rem;
+  }
+}

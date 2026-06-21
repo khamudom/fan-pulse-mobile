@@ -1,0 +1,116 @@
+.homePage {
+  background: var(--color-pitch-night);
+  color: var(--color-text);
+}
+
+.briefingSection {
+  padding: var(--space-8) 0;
+  background: var(--color-pitch-night);
+}
+
+.briefingPanel {
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(217, 164, 65, 0.2);
+  background: rgba(15, 31, 24, 0.7);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.briefingHeader {
+  margin-bottom: var(--space-6);
+}
+
+.briefingTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-2xl), 3vw, var(--text-3xl));
+  font-weight: 600;
+  color: var(--color-text-inverse);
+}
+
+.briefingSubtitle {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 52ch;
+}
+
+.personalSection {
+  padding: var(--space-8) 0 var(--space-10);
+  background: var(--color-pitch-night);
+}
+
+.personalGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 900px) {
+  .personalGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.fixturesSection {
+  padding: var(--space-10) 0 var(--space-16);
+  background: var(--color-pitch-night);
+  border-top: 1px solid rgba(244, 236, 218, 0.06);
+}
+
+.fixturesHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.fixturesTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-2xl), 3vw, var(--text-3xl));
+  font-weight: 600;
+  color: var(--color-text-inverse);
+}
+
+.fixturesSubtitle {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.sectionActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.fixturesSignoff {
+  margin-top: var(--space-10);
+  text-align: center;
+}
+
+.fixturesSignoff p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-style: italic;
+  color: var(--color-trophy-gold-light);
+}
+
+.cta {
+  margin-top: var(--space-6);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-family: var(--font-ui);
+}
+
+.cta a {
+  color: var(--color-trophy-gold);
+  font-weight: 700;
+}

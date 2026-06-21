@@ -1,0 +1,13 @@
+.badge {
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+
+.api {
+  color: var(--color-success);
+}
+
+.local {
+  color: var(--color-accent);
+}
