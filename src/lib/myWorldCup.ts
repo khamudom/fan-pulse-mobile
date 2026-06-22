@@ -17,7 +17,7 @@ export function findTeamByName(teams: Team[], name?: string | null): Team | null
   return teams.find((t) => normalizeName(t.name) === target) ?? null;
 }
 
-function findSquadByName(name?: string | null): WorldCupSquad | null {
+export function findSquadByName(name?: string | null): WorldCupSquad | null {
   if (!name) return null;
   const target = normalizeName(name);
   return (

@@ -32,6 +32,16 @@ function worldCupFetchErrorMessage(error: unknown): string {
 function logWorldCupFetchFailure(scope: string, error: unknown): void {
   const message =
     error instanceof Error ? error.message : "World Cup API request failed";
+  const isRecoverable =
+    message !== WORLD_CUP_API_AUTH_REQUIRED &&
+    (/responded with 5\d\d/.test(message) ||
+      /fetch failed|timeout|network|socket hang up/i.test(message));
+
+  if (isRecoverable) {
+    console.warn(`[worldCupApi] ${scope}: ${message}`);
+    return;
+  }
+
   console.error(`[worldCupApi] ${scope}: ${message}`);
 }
 
@@ -261,8 +271,23 @@ export async function getMatchById(
   id: string,
   mode: FetchMode = "cached",
 ): Promise<ApiResult<Match | null>> {
-  const { data: matches, source, error } = await getMatches(mode);
-  const match = matches.find((item) => item.id === id) ?? null;
+  const { data: initialMatches, source: initialSource, error } =
+    await getMatches(mode);
+  let matches = initialMatches;
+  let source = initialSource;
+  let match = matches.find((item) => item.id === id) ?? null;
+
+  if (!match && mode === "fresh" && error) {
+    const cached = await getMatches("cached");
+    match = cached.data.find((item) => item.id === id) ?? null;
+    if (match) {
+      return { data: match, source: cached.source, error };
+    }
+    if (!matches.length && cached.data.length) {
+      matches = cached.data;
+      source = cached.source;
+    }
+  }
 
   if (!match) {
     return {
@@ -273,6 +298,40 @@ export async function getMatchById(
   }
 
   return { data: match, source, error };
+}
+
+export async function getTeamById(id: string): Promise<ApiResult<Team | null>> {
+  const { data: teams, source, error } = await getTeams();
+  const team = teams.find((item) => item.id === id) ?? null;
+
+  if (!team) {
+    return {
+      data: null,
+      source,
+      error: error ?? "Team not found",
+    };
+  }
+
+  return { data: team, source, error };
+}
+
+export async function getMatchesForTeam(
+  teamId: string,
+  mode: FetchMode = "cached",
+): Promise<ApiResult<Match[]>> {
+  const { data: matches, source, error } = await getMatches(mode);
+  const filtered = matches
+    .filter(
+      (match) =>
+        match.homeTeam.id === teamId || match.awayTeam.id === teamId,
+    )
+    .sort((a, b) => {
+      const aKickoff = a.kickoffUtc ?? a.date;
+      const bKickoff = b.kickoffUtc ?? b.date;
+      return aKickoff.localeCompare(bKickoff);
+    });
+
+  return { data: filtered, source, error };
 }
 
 async function getGroupsUncached(): Promise<ApiResult<Group[]>> {

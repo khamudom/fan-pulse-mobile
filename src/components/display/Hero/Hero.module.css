@@ -2,7 +2,7 @@
   position: relative;
   background: var(--color-hero-bg);
   color: var(--color-text-inverse);
-  padding: var(--space-16) 0 var(--space-12);
+  padding: var(--space-10) 0 0;
   overflow: hidden;
 }
 

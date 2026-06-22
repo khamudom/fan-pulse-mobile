@@ -10,7 +10,8 @@ import { Input } from "@khamudom/lumen-ui-react";
 import { Hero } from "@/components/display/Hero";
 import { DataSourceBadge } from "@/components/display/DataSourceBadge";
 import { EmptyState } from "@/components/feedback/EmptyState";
-import { getTeamFifaNewsUrl } from "@/lib/fifa";
+import { useAppNavigate } from "@/hooks/useAppNavigate";
+import { useRouter } from "next/navigation";
 import { toDataSourceBadge, type ApiDataSource } from "@/lib/dataSourceBadge";
 import { useIsClient } from "@/lib/useClientOnly";
 import type { Team } from "@/types";
@@ -59,7 +60,8 @@ function getGroupTabSubtitle(group: string, teamsInGroup: number): string {
 
 const teamsHeroProps = {
   title: "Meet the Nations",
-  tagline: "World Cup 2026",
+  subtitle:
+    "Wander through the groups — or search for the nation that calls to you.",
   backgroundImage: "/images/wc-flags.webp",
   backgroundImageFit: "fullWidth" as const,
 };
@@ -120,10 +122,7 @@ export function TeamsExperience({
   if (teams.length === 0) {
     return (
       <>
-        <Hero
-          {...teamsHeroProps}
-          subtitle="From every corner of the earth, dreams arrive at the same stage."
-        />
+        <Hero {...teamsHeroProps} />
         <section className="section">
           <div className="container">
             <EmptyState
@@ -140,7 +139,6 @@ export function TeamsExperience({
     <>
       <Hero
         {...teamsHeroProps}
-        subtitle="From every corner of the earth, 48 dreams arrive at the same stage."
         stats={[
           `${teams.length} Nations.`,
           `${groups.length || 12} Groups.`,
@@ -148,10 +146,7 @@ export function TeamsExperience({
         ]}
       />
 
-      <section
-        className={styles.experience}
-        aria-labelledby="teams-explore-title"
-      >
+      <section className={styles.experience} aria-label="Team nations">
         <div className={styles.backdrop} aria-hidden="true" />
         <div className={styles.sparkles} aria-hidden="true">
           <span className={styles.sparkle}>✦</span>
@@ -162,23 +157,7 @@ export function TeamsExperience({
         </div>
 
         <div className={`container ${styles.inner}`}>
-          <header className={styles.preamble}>
-            <p className={styles.beat}>Every flag tells a story.</p>
-            <p className={styles.beat}>Every anthem holds a hope.</p>
-            <p className={styles.beat}>Every nation carries a dream.</p>
-            <div className={styles.divider} aria-hidden="true" />
-          </header>
-
-          <div className={styles.exploreHeader}>
-            <div>
-              <h2 id="teams-explore-title" className={styles.exploreTitle}>
-                Explore the nations
-              </h2>
-              <p className={styles.exploreSubtitle}>
-                Wander through the groups — or search for the nation that calls
-                to you.
-              </p>
-            </div>
+          <div className={styles.sourceRow}>
             <DataSourceBadge
               source={toDataSourceBadge(teamsSource, teams.length > 0)}
             />
@@ -256,6 +235,7 @@ export function TeamsExperience({
           <div className={styles.searchRow}>
             {mounted ? (
               <Input
+                className={styles.searchInput}
                 label="Find a nation"
                 placeholder="Search by name…"
                 value={search}
@@ -306,23 +286,23 @@ function NationCard({
   team: Team;
   animationDelay: number;
 }) {
-  const fifaUrl = getTeamFifaNewsUrl(team);
+  const { navigate } = useAppNavigate();
+  const router = useRouter();
+  const teamHref = `/teams/${team.id}`;
 
   return (
     <button
       type="button"
       className={styles.nationCard}
       style={{ animationDelay: `${Math.min(animationDelay, 600)}ms` }}
-      aria-label={`View ${team.name} on FIFA.com (opens in new tab)`}
-      onClick={() => {
-        window.open(fifaUrl, "_blank", "noopener,noreferrer");
-      }}
+      aria-label={`View ${team.name}`}
+      onClick={() => navigate(teamHref)}
+      onMouseEnter={() => router.prefetch(teamHref)}
+      onFocus={() => router.prefetch(teamHref)}
+      onTouchStart={() => router.prefetch(teamHref)}
     >
       <span className={styles.nationGlow} aria-hidden="true" />
       <div className={styles.nationVisual}>
-        {team.group ? (
-          <span className={styles.groupBadge}>Group {team.group}</span>
-        ) : null}
         {team.flag ? (
           <img
             src={team.flag}
@@ -339,7 +319,7 @@ function NationCard({
       {team.fifaCode ? (
         <span className={styles.nationCode}>{team.fifaCode}</span>
       ) : null}
-      <span className={styles.nationCta}>View on FIFA</span>
+      <span className={styles.nationCta}>View team</span>
     </button>
   );
 }

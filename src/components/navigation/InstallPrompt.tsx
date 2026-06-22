@@ -2,6 +2,7 @@
 
 import { Button } from "@khamudom/lumen-ui-react";
 import { useAppStore } from "@/stores/appStore";
+import { useIsClient } from "@/lib/useClientOnly";
 import styles from "./InstallPrompt.module.css";
 
 function isIos(): boolean {
@@ -18,9 +19,14 @@ function isStandalone(): boolean {
 }
 
 export function InstallPrompt() {
+  const mounted = useIsClient();
   const installPrompt = useAppStore((s) => s.installPrompt);
   const dismissInstallPrompt = useAppStore((s) => s.dismissInstallPrompt);
   const setInstallDeferredEvent = useAppStore((s) => s.setInstallDeferredEvent);
+
+  if (!mounted) {
+    return null;
+  }
 
   if (isStandalone() || installPrompt.dismissed) {
     return null;

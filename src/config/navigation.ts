@@ -28,6 +28,7 @@ const TAB_HREFS = new Set(TAB_ITEMS.map((t) => t.href));
 
 const DETAIL_ROUTE_PATTERNS: Array<{ pattern: RegExp; title: string }> = [
   { pattern: /^\/matches\/[^/]+$/, title: "Match" },
+  { pattern: /^\/teams\/[^/]+$/, title: "Team" },
   { pattern: /^\/friends\/[^/]+$/, title: "Friend" },
   { pattern: /^\/friends$/, title: "Friends" },
   { pattern: /^\/my-world-cup$/, title: "My World Cup" },
