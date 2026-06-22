@@ -27,7 +27,7 @@ const features = [
   {
     title: "Group Standings",
     description: "Track every group from A through L with live standings.",
-    href: "/matches?section=group-standings",
+    href: "/matches?tab=groups",
   },
   {
     title: "Stadiums",
@@ -42,7 +42,9 @@ export function HomeFeatures() {
     <div className={styles.featureGrid}>
       {features.map((feature) => {
         const isDeepLink =
-          feature.href.includes("#") || feature.href.includes("section=");
+          feature.href.includes("#") ||
+          feature.href.includes("section=") ||
+          feature.href.includes("tab=");
 
         return (
         <Link

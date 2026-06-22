@@ -21,7 +21,7 @@ export function MatchesScheduleSkeleton() {
 
 export function MatchesGroupStandingsSkeleton() {
   return (
-    <section className="section sectionAlt" aria-busy="true" aria-live="polite">
+    <section className="section" aria-busy="true" aria-live="polite">
       <div className="container">
         <Skeleton className={styles.title} />
         <Skeleton className={styles.standings} />

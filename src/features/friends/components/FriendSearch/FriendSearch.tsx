@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { Button, Input } from "@khamudom/lumen-ui-react";
 import {
   respondToFriendRequest,
@@ -16,7 +16,7 @@ function displayName(user: UserSearchResult): string {
 }
 
 export function FriendSearch() {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<UserSearchResult[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export function FriendSearch() {
       const becameFriends = /connected/i.test(result.success ?? "");
       updateRelationship(userId, becameFriends ? "friends" : "outgoing_pending");
       setSuccess(result.success ?? "Request sent.");
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 
@@ -83,7 +83,7 @@ export function FriendSearch() {
       }
       updateRelationship(userId, "friends");
       setSuccess(result.success ?? "You're now connected!");
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 

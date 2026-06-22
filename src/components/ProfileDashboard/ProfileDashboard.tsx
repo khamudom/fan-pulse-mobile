@@ -76,7 +76,6 @@ export function ProfileDashboard({
         <Link href="/friends">Friends</Link>
         <Link href="/my-world-cup">Edit My World Cup</Link>
         <Link href="/#briefing">Read briefing</Link>
-        <Link href="/challenges">Daily challenges</Link>
       </div>
     </>
   );

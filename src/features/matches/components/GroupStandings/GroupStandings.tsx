@@ -38,34 +38,37 @@ export function GroupStandings({ groups, limit }: GroupStandingsProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Team</TableHead>
-                  <TableHead>P</TableHead>
-                  <TableHead>W</TableHead>
-                  <TableHead>D</TableHead>
-                  <TableHead>L</TableHead>
-                  <TableHead>GD</TableHead>
-                  <TableHead>Pts</TableHead>
+                  <TableHead className={styles.teamCol}>Team</TableHead>
+                  <TableHead className={styles.statCol}>P</TableHead>
+                  <TableHead className={styles.statCol}>W</TableHead>
+                  <TableHead className={styles.statCol}>D</TableHead>
+                  <TableHead className={styles.statCol}>L</TableHead>
+                  <TableHead className={styles.gdCol}>GD</TableHead>
+                  <TableHead className={styles.ptsCol}>Pt</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {group.standings.map((row, idx) => (
                   <TableRow key={row.teamId}>
-                    <TableCell>
+                    <TableCell className={styles.teamCol}>
                       <span className={styles.teamCell}>
                         {row.flag && (
-                          <img src={row.flag} alt="" width={20} height={14} />
+                          <img src={row.flag} alt="" width={16} height={11} />
                         )}
-                        <span>
-                          {idx + 1}. {row.teamName}
+                        <span className={styles.teamName}>
+                          <span className={styles.rank}>{idx + 1}.</span>{" "}
+                          {row.teamName}
                         </span>
                       </span>
                     </TableCell>
-                    <TableCell>{row.played}</TableCell>
-                    <TableCell>{row.won}</TableCell>
-                    <TableCell>{row.drawn}</TableCell>
-                    <TableCell>{row.lost}</TableCell>
-                    <TableCell>{row.goalDifference}</TableCell>
-                    <TableCell>
+                    <TableCell className={styles.statCol}>{row.played}</TableCell>
+                    <TableCell className={styles.statCol}>{row.won}</TableCell>
+                    <TableCell className={styles.statCol}>{row.drawn}</TableCell>
+                    <TableCell className={styles.statCol}>{row.lost}</TableCell>
+                    <TableCell className={styles.gdCol}>
+                      {row.goalDifference}
+                    </TableCell>
+                    <TableCell className={styles.ptsCol}>
                       <strong>{row.points}</strong>
                     </TableCell>
                   </TableRow>

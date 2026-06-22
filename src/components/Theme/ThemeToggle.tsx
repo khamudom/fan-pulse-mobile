@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { useTransition } from "react";
 import { Button } from "@khamudom/lumen-ui-react";
 import { setThemePreference } from "@/actions/theme";
@@ -12,7 +12,7 @@ type ThemeToggleProps = {
 };
 
 export function ThemeToggle({ resolvedTheme }: ThemeToggleProps) {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const [isPending, startTransition] = useTransition();
   const isDark = resolvedTheme === "dark";
 
@@ -20,7 +20,7 @@ export function ThemeToggle({ resolvedTheme }: ThemeToggleProps) {
     const next: ResolvedTheme = isDark ? "light" : "dark";
     startTransition(async () => {
       await setThemePreference(next);
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 

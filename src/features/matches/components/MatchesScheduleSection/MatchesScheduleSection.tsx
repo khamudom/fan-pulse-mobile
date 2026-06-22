@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { MatchDateTimeline } from "../MatchDateTimeline";
 import { MatchCard } from "../MatchCard";
 import { SectionHeader } from "@/components/display/SectionHeader";
@@ -9,11 +9,10 @@ import { EmptyState } from "@/components/feedback/EmptyState";
 import { toDataSourceBadge, type ApiDataSource } from "@/lib/dataSourceBadge";
 import {
   formatSelectedDateLabel,
-  getDefaultSelectedDate,
   getMatchesOnDate,
   getUniqueMatchDates,
 } from "@/lib/matchDate";
-import { useSelectedMatchDate } from "@/lib/useSelectedMatchDate";
+import { useAppStore } from "@/stores/appStore";
 import type { Match } from "@/types";
 import styles from "../MatchesExperience/MatchesExperience.module.css";
 
@@ -22,6 +21,7 @@ interface MatchesScheduleSectionProps {
   matchesSource: ApiDataSource;
   error?: string;
   initialSelectedDate?: string;
+  onPrefetchMatch?: (matchId: string) => void;
 }
 
 function getMatchesDayIntro(matchCount: number, dateLabel: string): string {
@@ -39,12 +39,18 @@ export function MatchesScheduleSection({
   matchesSource,
   error,
   initialSelectedDate = "",
+  onPrefetchMatch,
 }: MatchesScheduleSectionProps) {
   const dates = useMemo(() => getUniqueMatchDates(matches), [matches]);
-  const [selectedDate, setSelectedDate, isDateReady] = useSelectedMatchDate(
-    dates,
-    initialSelectedDate,
-  );
+  const selectedDate = useAppStore((s) => s.selectedMatchDate) ?? initialSelectedDate;
+  const setSelectedMatchDate = useAppStore((s) => s.setSelectedMatchDate);
+  const isDateReady = Boolean(selectedDate);
+
+  useEffect(() => {
+    if (!useAppStore.getState().selectedMatchDate && initialSelectedDate) {
+      setSelectedMatchDate(initialSelectedDate);
+    }
+  }, [initialSelectedDate, setSelectedMatchDate]);
   const matchesOnDate = useMemo(
     () => getMatchesOnDate(matches, selectedDate),
     [matches, selectedDate],
@@ -77,7 +83,7 @@ export function MatchesScheduleSection({
         <MatchDateTimeline
           dates={dates}
           selectedDate={selectedDate}
-          onSelectDate={setSelectedDate}
+          onSelectDate={setSelectedMatchDate}
         />
 
         <SectionHeader
@@ -107,7 +113,11 @@ export function MatchesScheduleSection({
         ) : (
           <div className={styles.matchGrid}>
             {matchesOnDate.map((match) => (
-              <MatchCard key={match.id} match={match} />
+              <MatchCard
+                key={match.id}
+                match={match}
+                onPrefetch={() => onPrefetchMatch?.(match.id)}
+              />
             ))}
           </div>
         )}

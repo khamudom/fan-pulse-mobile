@@ -111,6 +111,5 @@ export async function saveMyBracketPrediction(
 
   revalidatePath("/predictor");
   revalidatePath("/profile");
-  revalidatePath("/challenges");
   return { success: true, isNew: true };
 }

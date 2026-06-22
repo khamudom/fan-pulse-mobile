@@ -20,6 +20,7 @@ import styles from "./MatchCard.module.css";
 interface MatchCardProps {
   match: Match;
   featured?: boolean;
+  onPrefetch?: () => void;
 }
 
 function TeamFlag({ name, flag }: { name: string; flag?: string }) {
@@ -54,14 +55,19 @@ function TeamInfo({ name, score }: { name: string; score?: number }) {
   );
 }
 
-export function MatchCard({ match, featured = false }: MatchCardProps) {
+export function MatchCard({ match, featured = false, onPrefetch }: MatchCardProps) {
   const showScore =
     match.status === "live" ||
     match.status === "finished" ||
     match.status === "halftime";
 
   return (
-    <Card className={featured ? styles.featured : undefined}>
+    <div
+      onMouseEnter={onPrefetch}
+      onFocus={onPrefetch}
+      onTouchStart={onPrefetch}
+    >
+      <Card className={featured ? styles.featured : undefined}>
       <CardHeader className={styles.header}>
         <div className={styles.meta}>
           {match.group && (
@@ -111,10 +117,11 @@ export function MatchCard({ match, featured = false }: MatchCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Link href={`/matches/${match.id}`} className={styles.link}>
+        <Link href={`/matches/${match.id}`} scroll={false} className={styles.link}>
           <Button variant="primary">View Match</Button>
         </Link>
       </CardFooter>
-    </Card>
+      </Card>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@khamudom/lumen-ui-react";
 import { signOut } from "@/actions/auth";
@@ -16,7 +16,7 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ signedIn, displayName }: UserMenuProps) {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const { openAuthModal } = useAuthModal();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ export function UserMenu({ signedIn, displayName }: UserMenuProps) {
   async function handleSignOut() {
     setOpen(false);
     await signOut();
-    router.refresh();
+    invalidateAndRefresh([["matches"], ["teams"], ["groups"]]);
   }
 
   return (

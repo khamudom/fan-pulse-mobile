@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  min-height: 100%;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container {
+    will-change: auto;
+  }
+}

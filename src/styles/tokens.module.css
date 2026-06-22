@@ -1,0 +1,11 @@
+.shellBg {
+  background: var(--color-bg);
+}
+
+.surface {
+  background: var(--color-surface);
+}
+
+.accent {
+  color: var(--color-trophy-gold);
+}

@@ -92,7 +92,8 @@
 }
 
 :root {
-  --font-serif: var(--font-fraunces), "Iowan Old Style", "Palatino Linotype", serif;
+  --font-serif:
+    var(--font-fraunces), "Iowan Old Style", "Palatino Linotype", serif;
   --font-sans: var(--font-archivo), system-ui, -apple-system, sans-serif;
   --font-ui: var(--font-archivo), system-ui, -apple-system, sans-serif;
   --font-scoreboard: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
@@ -131,7 +132,9 @@
 
   --layout-max: 1200px;
   --layout-narrow: 720px;
-  --header-height: 64px;
+  --header-height: 56px;
+  --tab-bar-height: 56px;
+  --app-frame-max: 1200px;
 }
 
 *,
@@ -147,16 +150,18 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 main {
-  min-height: calc(100vh - var(--header-height));
+  min-height: 0;
 }
 
 a {
@@ -218,9 +223,9 @@ p {
   }
 }
 
-.section {
+/* .section {
   padding: var(--space-10) 0;
-}
+} */
 
 .sectionAlt {
   background: var(--color-surface);

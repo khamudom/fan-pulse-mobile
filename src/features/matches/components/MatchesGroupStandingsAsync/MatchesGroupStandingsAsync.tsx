@@ -1,13 +1,7 @@
 import { MatchesGroupStandingsSection } from "../MatchesGroupStandingsSection/MatchesGroupStandingsSection";
 import { getGroups } from "@/services/worldCupApi";
 
-interface MatchesGroupStandingsAsyncProps {
-  initialSection?: string;
-}
-
-export async function MatchesGroupStandingsAsync({
-  initialSection,
-}: MatchesGroupStandingsAsyncProps) {
+export async function MatchesGroupStandingsAsync() {
   const { data: groups, source, error } = await getGroups();
 
   return (
@@ -15,7 +9,6 @@ export async function MatchesGroupStandingsAsync({
       groups={groups}
       groupsSource={source}
       error={error}
-      initialSection={initialSection}
     />
   );
 }

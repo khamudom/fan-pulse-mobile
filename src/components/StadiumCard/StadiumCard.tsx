@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 import {
-  Badge,
   Card,
   CardContent,
   CardHeader,
@@ -19,7 +18,6 @@ const DESKTOP_MEDIA_QUERY = "(min-width: 768px)";
 interface StadiumCardProps {
   stadium: Stadium;
   matches?: Match[];
-  featured?: boolean;
 }
 
 function MatchesChevron() {
@@ -93,17 +91,13 @@ function StadiumMatchesAccordion({ matches }: { matches: Match[] }) {
 export function StadiumCard({
   stadium,
   matches = [],
-  featured = false,
 }: StadiumCardProps) {
   const sortedMatches = sortMatchesByKickoff(matches);
   const matchCount = sortedMatches.length || stadium.matchCount;
 
   return (
-    <Card className={featured ? styles.featured : undefined}>
+    <Card>
       <CardHeader>
-        {featured && (
-          <Badge className={styles.featuredBadge}>Featured Venue</Badge>
-        )}
         <CardTitle as="h3">{stadium.name}</CardTitle>
         {stadium.fifaName && stadium.fifaName !== stadium.name && (
           <p className={styles.fifaName}>{stadium.fifaName}</p>

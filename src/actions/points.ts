@@ -94,7 +94,6 @@ export async function savePrediction(
   await completeChallengeBySlug(user.id, "predict-today");
 
   revalidatePath("/predictor");
-  revalidatePath("/challenges");
   return { success: true, isNew: true };
 }
 

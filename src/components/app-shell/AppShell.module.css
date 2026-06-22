@@ -1,0 +1,45 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  background: var(--color-bg);
+}
+
+.frame {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  max-width: var(--app-frame-max, var(--layout-max));
+  margin: 0 auto;
+}
+
+.contentColumn {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.main {
+  flex: 1;
+  min-height: 0;
+  padding-bottom: calc(
+    var(--tab-bar-height) + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+.mainNoTabs {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 900px) {
+  .frame {
+    padding: 0 var(--space-4);
+  }
+
+  .main {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}

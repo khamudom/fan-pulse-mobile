@@ -1,11 +1,6 @@
 import { Suspense } from "react";
-import { Hero } from "@/components/display/Hero";
-import { MatchesGroupStandingsAsync } from "@/features/matches/components/MatchesGroupStandingsAsync/MatchesGroupStandingsAsync";
-import { MatchesScheduleAsync } from "@/features/matches/components/MatchesScheduleAsync/MatchesScheduleAsync";
-import {
-  MatchesGroupStandingsSkeleton,
-  MatchesScheduleSkeleton,
-} from "@/features/matches/components/MatchesPageSkeletons/MatchesPageSkeletons";
+import { MatchesPageTabs } from "@/features/matches/components/MatchesPageTabs/MatchesPageTabs";
+import { MatchesScheduleSkeleton } from "@/features/matches/components/MatchesPageSkeletons/MatchesPageSkeletons";
 
 export const metadata = {
   title: "Matches",
@@ -15,26 +10,15 @@ export const metadata = {
 export default async function MatchesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ section?: string }>;
+  searchParams: Promise<{ section?: string; tab?: string }>;
 }) {
-  const { section } = await searchParams;
+  const { section, tab } = await searchParams;
+  const initialSection =
+    section ?? (tab === "groups" ? "group-standings" : undefined);
 
   return (
-    <div className="page">
-      <Hero
-        title="Match Schedule"
-        tagline="World Cup 2026"
-        subtitle="Follow the tournament day by day — pick a date and see what unfolds."
-        compact
-      />
-
-      <Suspense fallback={<MatchesScheduleSkeleton />}>
-        <MatchesScheduleAsync />
-      </Suspense>
-
-      <Suspense fallback={<MatchesGroupStandingsSkeleton />}>
-        <MatchesGroupStandingsAsync initialSection={section} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<MatchesScheduleSkeleton />}>
+      <MatchesPageTabs initialSection={initialSection} />
+    </Suspense>
   );
 }

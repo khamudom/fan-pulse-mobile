@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { Button, Dialog, Input } from "@khamudom/lumen-ui-react";
 import { setUsername } from "@/actions/social";
 import styles from "./EditableUsername.module.css";
@@ -16,7 +16,7 @@ export function EditableUsername({ username }: EditableUsernameProps) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
 
   function openModal() {
     setValue(username ?? "");
@@ -33,7 +33,7 @@ export function EditableUsername({ username }: EditableUsernameProps) {
         return;
       }
       setOpen(false);
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 

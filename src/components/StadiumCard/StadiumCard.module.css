@@ -1,13 +1,3 @@
-.featured {
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-md);
-}
-
-.featuredBadge {
-  align-self: flex-end;
-  width: fit-content;
-}
-
 .fifaName {
   font-size: var(--text-sm);
   color: var(--color-text-muted);

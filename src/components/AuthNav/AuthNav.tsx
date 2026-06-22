@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { Button } from "@khamudom/lumen-ui-react";
 import { signOut } from "@/actions/auth";
 import styles from "./AuthNav.module.css";
@@ -12,7 +12,7 @@ interface AuthNavProps {
 }
 
 export function AuthNav({ displayName, signedIn }: AuthNavProps) {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
 
   if (!signedIn) {
     return (
@@ -36,7 +36,7 @@ export function AuthNav({ displayName, signedIn }: AuthNavProps) {
         className={styles.signOut}
         onClick={async () => {
           await signOut();
-          router.refresh();
+          invalidateAndRefresh([["matches"], ["teams"], ["groups"]]);
         }}
       >
         Sign out

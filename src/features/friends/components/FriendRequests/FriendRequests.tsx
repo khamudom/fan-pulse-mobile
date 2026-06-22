@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { useTransition } from "react";
 import { Button } from "@khamudom/lumen-ui-react";
 import {
@@ -20,20 +20,20 @@ function displayName(request: FriendRequestSummary): string {
 }
 
 export function FriendRequests({ incoming, outgoing }: FriendRequestsProps) {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const [isPending, startTransition] = useTransition();
 
   function handleRespond(connectionId: string, accept: boolean) {
     startTransition(async () => {
       await respondToFriendRequest(connectionId, accept);
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 
   function handleCancel(connectionId: string) {
     startTransition(async () => {
       await removeConnection(connectionId);
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 

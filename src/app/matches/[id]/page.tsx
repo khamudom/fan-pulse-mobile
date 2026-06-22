@@ -1,3 +1,4 @@
+import { DetailSwipeBack } from "@/components/app-shell/DetailSwipeBack";
 import { notFound } from "next/navigation";
 import { MatchDetailView } from "@/features/matches";
 import { USE_PROTOTYPE_DATA } from "@/config/dataSource";
@@ -29,14 +30,16 @@ export default async function MatchDetailPage({ params }: PageProps) {
   const userPrediction = user ? await getMyMatchPrediction(id) : null;
 
   return (
-    <div className="page">
-      <MatchDetailView
-        match={match}
-        matchSource={source}
-        showPrototypeData={USE_PROTOTYPE_DATA}
-        isSignedIn={Boolean(user)}
-        userPrediction={userPrediction}
-      />
-    </div>
+    <DetailSwipeBack>
+      <div className="page">
+        <MatchDetailView
+          match={match}
+          matchSource={source}
+          showPrototypeData={USE_PROTOTYPE_DATA}
+          isSignedIn={Boolean(user)}
+          userPrediction={userPrediction}
+        />
+      </div>
+    </DetailSwipeBack>
   );
 }

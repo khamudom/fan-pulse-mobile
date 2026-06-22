@@ -4,6 +4,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-4);
+  margin-top: var(--space-10);
   margin-bottom: var(--space-6);
 }
 

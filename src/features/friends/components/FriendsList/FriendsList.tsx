@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { useTransition } from "react";
 import { Button } from "@khamudom/lumen-ui-react";
 import { ViewFriendLink } from "../ViewFriendLink";
@@ -18,7 +18,7 @@ function displayName(friend: FriendSummary): string {
 }
 
 export function FriendsList({ friends }: FriendsListProps) {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const [isPending, startTransition] = useTransition();
 
   if (friends.length === 0) {
@@ -32,7 +32,7 @@ export function FriendsList({ friends }: FriendsListProps) {
   function handleRemove(connectionId: string) {
     startTransition(async () => {
       await removeConnection(connectionId);
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 

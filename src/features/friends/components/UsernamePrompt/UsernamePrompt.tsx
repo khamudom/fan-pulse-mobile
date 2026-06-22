@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { useState, useTransition } from "react";
 import {
   Card,
@@ -14,7 +14,7 @@ import { setUsername } from "@/actions/social";
 import styles from "./UsernamePrompt.module.css";
 
 export function UsernamePrompt() {
-  const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -28,7 +28,7 @@ export function UsernamePrompt() {
         setError(result.error);
         return;
       }
-      router.refresh();
+      invalidateAndRefresh();
     });
   }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useInvalidateAndRefresh } from "@/hooks/useInvalidateAndRefresh";
 import { useActionState, useEffect } from "react";
 import {
   Card,
@@ -24,6 +25,7 @@ export function ResetPasswordForm({
   embedded = false,
 }: ResetPasswordFormProps) {
   const router = useRouter();
+  const invalidateAndRefresh = useInvalidateAndRefresh();
   const { closeResetPasswordModal } = useAuthModal();
   const [state, action, pending] = useActionState(updatePassword, initialState);
 
@@ -35,8 +37,8 @@ export function ResetPasswordForm({
     }
 
     router.replace("/");
-    router.refresh();
-  }, [state.success, embedded, closeResetPasswordModal, router]);
+    invalidateAndRefresh();
+  }, [state.success, embedded, closeResetPasswordModal, router, invalidateAndRefresh]);
 
   const header = (
     <div className={styles.header}>

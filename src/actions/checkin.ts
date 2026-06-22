@@ -2,14 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { getSessionUser } from "@/lib/auth";
-import { completeChallengeBySlug, ensureDailyCheckIn } from "@/lib/checkin";
-
-export type { DailyCheckInStatus } from "@/lib/checkin";
+import { ensureDailyCheckIn } from "@/lib/checkin";
 
 function revalidateCheckInPaths() {
   revalidatePath("/", "layout");
   revalidatePath("/profile");
-  revalidatePath("/challenges");
 }
 
 export async function performDailyCheckIn() {
@@ -26,19 +23,4 @@ export async function performDailyCheckIn() {
     alreadyCheckedIn: result.status.alreadyCheckedIn,
     streak: result.status.streak,
   };
-}
-
-export async function completeChallenge(slug: string) {
-  const user = await getSessionUser();
-  if (!user) return { error: "Not signed in." };
-
-  const result = await completeChallengeBySlug(user.id, slug);
-
-  if (!result.completed) {
-    return { success: true, alreadyCompleted: true };
-  }
-
-  revalidatePath("/challenges");
-  revalidatePath("/profile");
-  return { success: true, alreadyCompleted: false, points: result.points };
 }

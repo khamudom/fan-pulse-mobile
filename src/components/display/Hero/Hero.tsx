@@ -13,7 +13,7 @@ interface HeroAction {
 
 interface HeroProps {
   title: React.ReactNode;
-  subtitle: React.ReactNode;
+  subtitle?: React.ReactNode;
   tagline?: string;
   stats?: string[];
   actions?: HeroAction[];
@@ -97,7 +97,7 @@ export function Hero({
             </ul>
           )}
           {tagline ? <p className={styles.tagline}>{tagline}</p> : null}
-          <p className={styles.subtitle}>{subtitle}</p>
+          {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
           {actions.length > 0 && (
             <div className={styles.actions}>
               {actions.map((action) => (

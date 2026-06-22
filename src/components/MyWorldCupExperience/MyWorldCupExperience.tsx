@@ -548,15 +548,12 @@ function ClosingChapter({ nationName }: { nationName: string }) {
       <div className={`container ${styles.closingInner}`}>
         <h2 className={styles.closingTitle}>This is your World Cup.</h2>
         <p className={styles.closingLead}>
-          {nationName} carries your hopes now. Make your predictions, take on
-          the daily challenges, and live every moment of the journey.
+          {nationName} carries your hopes now. Make your bracket picks and live
+          every moment of the journey.
         </p>
         <div className={styles.closingActions}>
           <Link href="/predictor">
             <Button variant="outline">Make a prediction</Button>
-          </Link>
-          <Link href="/challenges">
-            <Button variant="outline">Daily challenges</Button>
           </Link>
           <Link href="/#briefing">
             <Button variant="outline">Read your briefing</Button>

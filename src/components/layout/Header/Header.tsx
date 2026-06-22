@@ -12,7 +12,6 @@ const navItems = [
   { href: "/", label: "Today" },
   { href: "/my-world-cup", label: "My World Cup", requiresAuth: true },
   { href: "/friends", label: "Friends", requiresAuth: true },
-  { href: "/challenges", label: "Challenges", requiresAuth: true },
   { href: "/matches", label: "Matches" },
   { href: "/predictor", label: "Predictor" },
   { href: "/teams", label: "Teams" },

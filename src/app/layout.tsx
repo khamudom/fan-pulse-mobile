@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Archivo, Barlow_Condensed, Fraunces } from "next/font/google";
 import { DeferredApiPreviewBanner } from "@/components/ApiPreviewBanner/DeferredApiPreviewBanner";
-import { AdminDrawer } from "@/components/AdminDrawer";
+import { AppShellContainer } from "@/components/app-shell/AppShellContainer";
 import { AuthModalProvider } from "@/components/AuthModal";
-// import { DataSourceLegend } from "@/components/DataSourceLegend";
 import { CheckInCelebrationContainer } from "@/components/CheckInCelebration";
-import { HeaderContainer, HeaderSkeleton } from "@/components/layout/Header";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { InstallPrompt } from "@/components/navigation/InstallPrompt";
 import { ThemeProvider } from "@/components/Theme";
 import { getThemeState } from "@/lib/theme-request";
+import { QueryProvider } from "@/queries/QueryProvider";
 import "@khamudom/lumen-ui-react/styles.css";
 import "./globals.css";
 
@@ -36,6 +36,25 @@ export const metadata: Metadata = {
   },
   description:
     "Your companion experience for the FIFA World Cup 2026 — matches, predictions, insights, and fan engagement.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "FanPulse",
+  },
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#081310",
 };
 
 /** worldcup26.ir is hosted in/near the Middle East; run server fetches closer to it. */
@@ -67,23 +86,23 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body suppressHydrationWarning>
-        <ThemeProvider preference={preference}>
-          <AuthModalProvider>
-            <Suspense fallback={null}>
-              <ScrollToTop />
-            </Suspense>
-            <DeferredApiPreviewBanner />
-            {/* <DataSourceLegend /> */}
-            <Suspense fallback={null}>
-              <AdminDrawer />
-            </Suspense>
-            <Suspense fallback={<HeaderSkeleton />}>
-              <HeaderContainer resolvedTheme={resolvedTheme} />
-            </Suspense>
-            <CheckInCelebrationContainer />
-            <main id="main-content">{children}</main>
-          </AuthModalProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider preference={preference}>
+            <AuthModalProvider>
+              <Suspense fallback={null}>
+                <ScrollToTop />
+              </Suspense>
+              <DeferredApiPreviewBanner />
+              <Suspense fallback={null}>
+                <CheckInCelebrationContainer />
+              </Suspense>
+              <AppShellContainer resolvedTheme={resolvedTheme}>
+                {children}
+              </AppShellContainer>
+              <InstallPrompt />
+            </AuthModalProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

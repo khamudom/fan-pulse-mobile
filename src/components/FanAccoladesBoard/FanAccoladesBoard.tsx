@@ -106,7 +106,7 @@ export function FanAccoladesBoard({
               </p>
             )}
             <div className={styles.actions}>
-              <Link href="/challenges">
+              <Link href="/profile">
                 <Button variant="primary">View accolades</Button>
               </Link>
             </div>
