@@ -1,7 +1,7 @@
 import styles from "./SectionHeader.module.css";
 
 interface SectionHeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   action?: React.ReactNode;
 }

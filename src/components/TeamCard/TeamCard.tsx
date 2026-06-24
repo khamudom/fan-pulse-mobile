@@ -40,9 +40,6 @@ export function TeamCard({ team }: TeamCardProps) {
         )}
         <div className={styles.identity}>
           <CardTitle as="h3">{team.name}</CardTitle>
-          {team.fifaCode && (
-            <span className={styles.code}>{team.fifaCode}</span>
-          )}
         </div>
       </CardHeader>
       <CardFooter className={styles.footer}>

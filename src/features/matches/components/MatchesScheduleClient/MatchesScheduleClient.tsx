@@ -10,6 +10,7 @@ import { matchesQueryOptions } from "@/queries/matchQueries";
 import { usePrefetchRoutes } from "@/hooks/usePrefetchRoutes";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useAppStore } from "@/stores/appStore";
+import styles from "../MatchesExperience/MatchesExperience.module.css";
 
 export function MatchesScheduleClient() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -65,7 +66,7 @@ export function MatchesScheduleClient() {
   }
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className={styles.swipeSurface}>
       {isFetching && data ? (
         <div className="sr-only" aria-live="polite">
           Refreshing matches

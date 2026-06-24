@@ -23,8 +23,13 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function MatchDetailPage({ params }: PageProps) {
   const { id } = await params;
-  // Fetch fresh so an in-progress match shows the current score on load.
-  const { data: match, source, error } = await getMatchById(id, "fresh");
+
+  const [{ data: match, source, error }, user, userPrediction] =
+    await Promise.all([
+      getMatchById(id, "cached"),
+      getSessionUser(),
+      getMyMatchPrediction(id),
+    ]);
 
   if (!match) {
     if (error && error !== "Match not found") {
@@ -44,9 +49,6 @@ export default async function MatchDetailPage({ params }: PageProps) {
 
     notFound();
   }
-
-  const user = await getSessionUser();
-  const userPrediction = user ? await getMyMatchPrediction(id) : null;
 
   return (
     <DetailSwipeBack>

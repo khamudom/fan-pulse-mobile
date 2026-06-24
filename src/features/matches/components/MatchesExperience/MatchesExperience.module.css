@@ -25,3 +25,8 @@
 .groupStandingsSection {
   scroll-margin-top: var(--header-height);
 }
+
+.swipeSurface {
+  touch-action: pan-x pinch-zoom;
+  contain: layout;
+}

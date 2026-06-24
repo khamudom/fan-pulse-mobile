@@ -17,7 +17,6 @@ interface AnimatedScreenContainerProps {
 export function AnimatedScreenContainer({ children }: AnimatedScreenContainerProps) {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
-  const transitionDirection = useAppStore((s) => s.transitionDirection);
   const reducedMotion = useAppStore((s) => s.preferences.reducedMotion);
   const prevPathRef = useRef(pathname);
 
@@ -26,6 +25,7 @@ export function AnimatedScreenContainer({ children }: AnimatedScreenContainerPro
       const el = containerRef.current;
       if (!el || reducedMotion) return;
 
+      const transitionDirection = useAppStore.getState().transitionDirection;
       const routeClass = getRouteClass(pathname);
       const prevRouteClass = getRouteClass(prevPathRef.current);
       const isDetailPush =
@@ -37,30 +37,54 @@ export function AnimatedScreenContainer({ children }: AnimatedScreenContainerPro
 
       gsap.killTweensOf(el);
 
+      const clearMotionProps = () => {
+        gsap.set(el, { clearProps: "transform,opacity" });
+      };
+
       if (isDetailPush) {
         gsap.fromTo(
           el,
           { x: "100%", opacity: 0.6 },
-          { x: "0%", opacity: 1, duration: 0.3, ease: "power2.out" },
+          {
+            x: "0%",
+            opacity: 1,
+            duration: 0.3,
+            ease: "power2.out",
+            onComplete: clearMotionProps,
+          },
         );
       } else if (isDetailPop) {
         gsap.fromTo(
           el,
           { x: "-12%", opacity: 0.6 },
-          { x: "0%", opacity: 1, duration: 0.25, ease: "power2.out" },
+          {
+            x: "0%",
+            opacity: 1,
+            duration: 0.25,
+            ease: "power2.out",
+            onComplete: clearMotionProps,
+          },
         );
       } else if (isTabSwitch) {
         gsap.fromTo(
           el,
           { opacity: 0.85, y: 8 },
-          { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.2,
+            ease: "power1.out",
+            onComplete: clearMotionProps,
+          },
         );
+      } else {
+        clearMotionProps();
       }
 
       prevPathRef.current = pathname;
       useAppStore.getState().setTransitionDirection("none");
     },
-    { dependencies: [pathname, transitionDirection, reducedMotion], scope: containerRef },
+    { dependencies: [pathname, reducedMotion], scope: containerRef },
   );
 
   return (

@@ -33,6 +33,7 @@ export function MatchesPageTabs({ initialSection }: MatchesPageTabsProps) {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pageChromeRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<MatchesTab>(() =>
     resolveInitialTab(initialSection, searchParams.get("tab")),
   );
@@ -64,9 +65,21 @@ export function MatchesPageTabs({ initialSection }: MatchesPageTabsProps) {
     scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [tab]);
 
+  useEffect(() => {
+    const chrome = pageChromeRef.current;
+    if (!chrome) return;
+
+    const blockWheel = (event: WheelEvent) => {
+      event.preventDefault();
+    };
+
+    chrome.addEventListener("wheel", blockWheel, { passive: false });
+    return () => chrome.removeEventListener("wheel", blockWheel);
+  }, []);
+
   return (
     <div className={styles.page}>
-      <div className={styles.pageChrome}>
+      <div ref={pageChromeRef} className={styles.pageChrome}>
         <Hero title="Match Schedule" compact>
           <div className={styles.tabs} role="tablist" aria-label="Matches views">
             <button

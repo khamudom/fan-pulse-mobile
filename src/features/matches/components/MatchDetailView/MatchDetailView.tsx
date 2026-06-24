@@ -100,6 +100,11 @@ export function MatchDetailView({
   }, [initialMatch.id]);
 
   useEffect(() => {
+    if (!isLiveStatus(initialMatch.status)) return;
+    void refresh();
+  }, [initialMatch.id, initialMatch.status, refresh]);
+
+  useEffect(() => {
     if (!isLive) return;
 
     let timer: number | undefined;

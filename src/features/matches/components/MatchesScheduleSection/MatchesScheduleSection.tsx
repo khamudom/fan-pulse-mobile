@@ -42,7 +42,8 @@ export function MatchesScheduleSection({
   onPrefetchMatch,
 }: MatchesScheduleSectionProps) {
   const dates = useMemo(() => getUniqueMatchDates(matches), [matches]);
-  const selectedDate = useAppStore((s) => s.selectedMatchDate) ?? initialSelectedDate;
+  const selectedDate =
+    useAppStore((s) => s.selectedMatchDate) ?? initialSelectedDate;
   const setSelectedMatchDate = useAppStore((s) => s.setSelectedMatchDate);
   const isDateReady = Boolean(selectedDate);
 
@@ -76,10 +77,7 @@ export function MatchesScheduleSection({
   return (
     <section className="section">
       <div className="container">
-        <SectionHeader
-          title="Pick a day"
-          subtitle="The tournament moves fast. Jump to the date you care about."
-        />
+        <SectionHeader subtitle="The tournament moves fast. Jump to the date you care about." />
         <MatchDateTimeline
           dates={dates}
           selectedDate={selectedDate}

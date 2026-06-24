@@ -110,16 +110,9 @@ export function TeamDetailView({
             {team.group ? (
               <span className={styles.metaItem}>Group {team.group}</span>
             ) : null}
-            {team.fifaCode ? (
-              <span
-                className={`${styles.metaItem} ${team.group ? styles.metaDivider : ""}`}
-              >
-                {team.fifaCode}
-              </span>
-            ) : null}
             {squad ? (
               <span
-                className={`${styles.metaItem} ${team.group || team.fifaCode ? styles.metaDivider : ""}`}
+                className={`${styles.metaItem} ${team.group ? styles.metaDivider : ""}`}
               >
                 Coach {squad.coach_en}
               </span>

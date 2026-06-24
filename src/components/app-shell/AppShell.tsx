@@ -2,15 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
-import { BottomTabNavigation } from "@/components/navigation/BottomTabNavigation";
-import { PersistentHeader } from "@/components/navigation/PersistentHeader";
+import { BottomTabNavigation, PersistentHeader } from "@/components/navigation";
 import {
   getTabIdForPath,
   shouldShowBottomTabs,
 } from "@/config/navigation";
 import { useAppStore } from "@/stores/appStore";
 import { PrefetchBootstrap } from "./PrefetchBootstrap";
-import { AnimatedScreenContainer } from "./AnimatedScreenContainer";
+import { AnimatedScreenContainer } from "@/components/app-shell/AnimatedScreenContainer";
 import styles from "./AppShell.module.css";
 
 interface AppShellProps {

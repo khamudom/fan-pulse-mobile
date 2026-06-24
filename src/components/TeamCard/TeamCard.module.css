@@ -48,8 +48,3 @@
   background: var(--color-border);
   border-radius: var(--radius-sm);
 }
-
-.code {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-}

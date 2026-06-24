@@ -267,7 +267,7 @@ function mapGameToMatch(
 export const getTeams = cache(getTeamsUncached);
 export const getMatches = cache(getMatchesUncached);
 
-export async function getMatchById(
+async function getMatchByIdUncached(
   id: string,
   mode: FetchMode = "cached",
 ): Promise<ApiResult<Match | null>> {
@@ -299,6 +299,8 @@ export async function getMatchById(
 
   return { data: match, source, error };
 }
+
+export const getMatchById = cache(getMatchByIdUncached);
 
 export async function getTeamById(id: string): Promise<ApiResult<Team | null>> {
   const { data: teams, source, error } = await getTeams();

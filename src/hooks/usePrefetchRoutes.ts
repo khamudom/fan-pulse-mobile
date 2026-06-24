@@ -38,6 +38,7 @@ export function usePrefetchRoutes() {
 
   const prefetchMatchDetail = useCallback(
     (matchId: string) => {
+      router.prefetch(`/matches/${matchId}`);
       void queryClient.prefetchQuery({
         queryKey: matchQueryKeys.detail(matchId),
         queryFn: async () => {
@@ -47,7 +48,7 @@ export function usePrefetchRoutes() {
         },
       });
     },
-    [queryClient],
+    [queryClient, router],
   );
 
   const prefetchAdjacentDates = useCallback(

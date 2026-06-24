@@ -316,9 +316,6 @@ function NationCard({
         )}
       </div>
       <span className={styles.nationName}>{team.name}</span>
-      {team.fifaCode ? (
-        <span className={styles.nationCode}>{team.fifaCode}</span>
-      ) : null}
       <span className={styles.nationCta}>View team</span>
     </button>
   );
