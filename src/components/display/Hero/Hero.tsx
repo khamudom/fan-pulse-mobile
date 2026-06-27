@@ -22,6 +22,8 @@ interface HeroProps {
   centered?: boolean;
   aside?: React.ReactNode;
   asideWide?: boolean;
+  centerImage?: string | StaticImageData;
+  centerImageAlt?: string;
   children?: React.ReactNode;
   backgroundImage?: string | StaticImageData;
   backgroundImageFit?: "default" | "photo" | "fullWidth";
@@ -38,6 +40,8 @@ export function Hero({
   centered = false,
   aside,
   asideWide = false,
+  centerImage,
+  centerImageAlt = "FIFA World Cup trophy",
   children,
   backgroundImage,
   backgroundImageFit = "default",
@@ -75,7 +79,7 @@ export function Hero({
       <div
         className={`${styles.inner} ${backgroundImage ? styles.withBackground : ""} ${
           aside ? styles.withAside : ""
-        } ${asideWide ? styles.withWideAside : ""}`}
+        } ${centerImage ? styles.withCenter : ""} ${asideWide ? styles.withWideAside : ""}`}
       >
         <div className={styles.content}>
           {sponsor && (
@@ -119,7 +123,37 @@ export function Hero({
           )}
           {children}
         </div>
-        {aside ? <div className={styles.aside}>{aside}</div> : null}
+        {centerImage && aside ? (
+          <div className={styles.asideCluster}>
+            <div className={styles.center}>
+              <Image
+                src={centerImage}
+                alt={centerImageAlt}
+                width={543}
+                height={1000}
+                priority
+                className={styles.centerImage}
+              />
+            </div>
+            <div className={styles.aside}>{aside}</div>
+          </div>
+        ) : (
+          <>
+            {centerImage ? (
+              <div className={styles.center}>
+                <Image
+                  src={centerImage}
+                  alt={centerImageAlt}
+                  width={543}
+                  height={1000}
+                  priority
+                  className={styles.centerImage}
+                />
+              </div>
+            ) : null}
+            {aside ? <div className={styles.aside}>{aside}</div> : null}
+          </>
+        )}
       </div>
     </section>
   );

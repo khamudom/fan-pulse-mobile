@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { homeHeroBackground } from "@/assets/homeHero";
+import { homeHeroBackground, homeHeroTrophy } from "@/assets/homeHero";
 import { Hero } from "@/components/display/Hero";
 import { WorldCupCountdown } from "@/components/display/WorldCupCountdown";
 import { SectionHeader } from "@/components/display/SectionHeader";
@@ -60,6 +60,7 @@ export default async function HomePage() {
         tagline="One World Cup Journey."
         subtitle="Choose the nation you'll stand behind and begin your journey to the Final."
         backgroundImage={homeHeroBackground}
+        centerImage={homeHeroTrophy}
         actions={
           user
             ? [

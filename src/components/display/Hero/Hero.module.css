@@ -133,10 +133,97 @@
   .withBackground.withAside {
     grid-template-columns: minmax(0, 1fr) auto;
   }
+
+  .withCenter {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .withBackground.withAside.withCenter {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .asideCluster {
+    display: contents;
+    margin-left: 0;
+  }
+
+  .asideCluster .center {
+    position: static;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    z-index: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+  }
+
+  .asideCluster .centerImage {
+    width: auto;
+    height: auto;
+    max-width: min(220px, 100%);
+    max-height: clamp(200px, 32vh, 360px);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .asideCluster .aside {
+    position: static;
+    z-index: auto;
+  }
 }
 
 .content {
   min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .asideCluster {
+    position: relative;
+    margin-left: clamp(var(--space-10), 18vw, var(--space-16));
+  }
+
+  .asideCluster .center {
+    position: absolute;
+    left: -60px;
+    top: -40px;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    pointer-events: none;
+  }
+
+  .asideCluster .centerImage {
+    width: auto;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: bottom left;
+  }
+
+  .asideCluster .aside {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.centerImage {
+  width: auto;
+  height: auto;
+  max-width: min(220px, 100%);
+  max-height: clamp(200px, 32vh, 360px);
+  object-fit: contain;
 }
 
 .aside {
