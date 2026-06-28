@@ -27,6 +27,6 @@
 }
 
 .swipeSurface {
-  touch-action: pan-x pinch-zoom;
+  touch-action: pan-x pan-y pinch-zoom;
   contain: layout;
 }
