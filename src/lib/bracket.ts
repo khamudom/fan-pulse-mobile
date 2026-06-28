@@ -1,4 +1,8 @@
 import { BRACKET_MATCHES, BRACKET_MATCH_MAP, BRACKET_ROUND_LABELS, BRACKET_ROUND_ORDER } from "@/data/worldCupBracket";
+import {
+  buildKnockoutMatchMap,
+  normalizeKnockoutMatchId,
+} from "@/lib/knockoutMatchId";
 import type {
   BracketMatchDef,
   BracketMatchState,
@@ -234,6 +238,26 @@ function teamParticipant(team: Team, slotCode?: string): BracketParticipant {
   };
 }
 
+function isPlaceholderTeam(team: Team): boolean {
+  return !team.id || team.id === "0" || team.name === "TBD";
+}
+
+/** Prefer a propagated winner over API placeholder labels in live mode. */
+function participantForLiveSlot(
+  slotCode: string,
+  liveTeam: Team,
+  resolved: Map<string, BracketParticipant>,
+): BracketParticipant {
+  const fromResolved = resolved.get(slotCode);
+  if (fromResolved?.team && !fromResolved.isPlaceholder) {
+    return fromResolved;
+  }
+  if (!isPlaceholderTeam(liveTeam)) {
+    return teamParticipant(liveTeam, slotCode);
+  }
+  return fromResolved ?? participantFromSlot(slotCode, resolved);
+}
+
 function winnerFromMatch(match: Match): BracketParticipant | undefined {
   if (match.status !== "finished") return undefined;
   if (match.homeScore > match.awayScore) {
@@ -245,6 +269,19 @@ function winnerFromMatch(match: Match): BracketParticipant | undefined {
   return undefined;
 }
 
+function buildLiveMatchMap(matches: Match[]): Map<string, Match> {
+  return buildKnockoutMatchMap(
+    matches.filter((match) => match.type && match.type !== "group"),
+  );
+}
+
+function getLiveMatch(
+  liveMatchMap: Map<string, Match>,
+  bracketMatchId: string,
+): Match | undefined {
+  return liveMatchMap.get(normalizeKnockoutMatchId(bracketMatchId));
+}
+
 /**
  * Resolve the live bracket purely from the World Cup API knockout matches.
  * Round-of-32 slots stay empty until the API exposes the actual matchups
@@ -254,11 +291,7 @@ function buildLiveResolvedParticipants(
   matches: Match[],
 ): Map<string, BracketParticipant> {
   const resolved = new Map<string, BracketParticipant>();
-  const liveMatchMap = new Map(
-    matches
-      .filter((match) => match.type && match.type !== "group")
-      .map((match) => [match.id.toUpperCase(), match]),
-  );
+  const liveMatchMap = buildLiveMatchMap(matches);
 
   for (const def of BRACKET_MATCHES) {
     for (const slotCode of [def.homeSlot, def.awaySlot]) {
@@ -267,7 +300,7 @@ function buildLiveResolvedParticipants(
       const winnerRef = slotCode.match(/^W(\d+)$/);
       if (!winnerRef) continue;
 
-      const sourceMatch = liveMatchMap.get(`M${winnerRef[1]}`);
+      const sourceMatch = liveMatchMap.get(winnerRef[1]);
       if (sourceMatch) {
         const winner = winnerFromMatch(sourceMatch);
         if (winner) {
@@ -278,7 +311,7 @@ function buildLiveResolvedParticipants(
   }
 
   for (const def of BRACKET_MATCHES) {
-    const liveMatch = liveMatchMap.get(def.id);
+    const liveMatch = getLiveMatch(liveMatchMap, def.id);
     if (!liveMatch) continue;
 
     const winner = winnerFromMatch(liveMatch);
@@ -328,10 +361,10 @@ function buildMatchState(
 ): BracketMatchState {
   const useLiveMatch = mode === "live" && liveMatch;
   const home = useLiveMatch
-    ? teamParticipant(liveMatch.homeTeam, def.homeSlot)
+    ? participantForLiveSlot(def.homeSlot, liveMatch.homeTeam, resolved)
     : participantFromSlot(def.homeSlot, resolved);
   const away = useLiveMatch
-    ? teamParticipant(liveMatch.awayTeam, def.awaySlot)
+    ? participantForLiveSlot(def.awaySlot, liveMatch.awayTeam, resolved)
     : participantFromSlot(def.awaySlot, resolved);
 
   let winner: BracketParticipant | undefined;
@@ -386,11 +419,7 @@ export function buildBracketState(options: {
     thirdPlaceQualifiers = [],
   } = options;
 
-  const liveMatchMap = new Map(
-    matches
-      .filter((match) => match.type && match.type !== "group")
-      .map((match) => [match.id.toUpperCase(), match]),
-  );
+  const liveMatchMap = buildLiveMatchMap(matches);
 
   const resolved =
     mode === "live"
@@ -440,7 +469,7 @@ function buildAllMatchStates(
     buildMatchState(
       def,
       resolved,
-      liveMatchMap.get(def.id),
+      getLiveMatch(liveMatchMap, def.id),
       mode,
       picks,
       teams,
@@ -469,11 +498,7 @@ export function buildBracketMatchMap(options: {
     includeThirdPlace = false,
   } = options;
 
-  const liveMatchMap = new Map(
-    matches
-      .filter((match) => match.type && match.type !== "group")
-      .map((match) => [match.id.toUpperCase(), match]),
-  );
+  const liveMatchMap = buildLiveMatchMap(matches);
 
   const resolved =
     mode === "live"
@@ -565,11 +590,7 @@ export function getKnockoutPickScore(
   picks: BracketWinnerPicks,
   matches: Match[],
 ): { correct: number; decided: number; total: number } {
-  const liveMatchMap = new Map(
-    matches
-      .filter((match) => match.type && match.type !== "group")
-      .map((match) => [match.id.toUpperCase(), match]),
-  );
+  const liveMatchMap = buildLiveMatchMap(matches);
 
   const knockoutMatches = BRACKET_MATCHES.filter((match) => match.round !== "third");
   let correct = 0;
@@ -579,7 +600,7 @@ export function getKnockoutPickScore(
     const pickedTeamId = picks[def.id];
     if (!pickedTeamId) continue;
 
-    const liveMatch = liveMatchMap.get(def.id);
+    const liveMatch = getLiveMatch(liveMatchMap, def.id);
     if (!liveMatch || liveMatch.status !== "finished") continue;
 
     decided += 1;

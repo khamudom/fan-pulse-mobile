@@ -60,6 +60,8 @@ interface ApiGame {
   type: string;
   home_team_name_en: string;
   away_team_name_en: string;
+  home_team_label?: string;
+  away_team_label?: string;
 }
 
 interface ApiTeam {
@@ -214,7 +216,26 @@ function mapApiTeam(
   group?: string,
   fifaCode?: string,
 ): Team {
-  return { id, name, flag, group, fifaCode };
+  const isPlaceholder = !id || id === "0";
+  return {
+    id: isPlaceholder ? "" : id,
+    name: name || "TBD",
+    flag,
+    group,
+    fifaCode,
+  };
+}
+
+function resolveApiTeamName(
+  teamId: string,
+  teamName: string | undefined,
+  teamLabel: string | undefined,
+  fallbackTeam: ApiTeam | undefined,
+): string {
+  if (teamId && teamId !== "0") {
+    return teamName || fallbackTeam?.name_en || "TBD";
+  }
+  return teamLabel || teamName || "TBD";
 }
 
 function mapGameToMatch(
@@ -232,18 +253,31 @@ function mapGameToMatch(
     ? zonedLocalToUtcIso(localDateTime, venueTimeZone)
     : undefined;
 
+  const homeName = resolveApiTeamName(
+    game.home_team_id,
+    game.home_team_name_en,
+    game.home_team_label,
+    homeApi,
+  );
+  const awayName = resolveApiTeamName(
+    game.away_team_id,
+    game.away_team_name_en,
+    game.away_team_label,
+    awayApi,
+  );
+
   return {
     id: game.id,
     homeTeam: mapApiTeam(
       game.home_team_id,
-      game.home_team_name_en || homeApi?.name_en || "TBD",
+      homeName,
       homeApi?.flag,
       game.group,
       homeApi?.fifa_code,
     ),
     awayTeam: mapApiTeam(
       game.away_team_id,
-      game.away_team_name_en || awayApi?.name_en || "TBD",
+      awayName,
       awayApi?.flag,
       game.group,
       awayApi?.fifa_code,

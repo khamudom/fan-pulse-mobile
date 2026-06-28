@@ -1,4 +1,8 @@
 import { BRACKET_MATCHES } from "@/data/worldCupBracket";
+import {
+  buildKnockoutMatchMap,
+  normalizeKnockoutMatchId,
+} from "@/lib/knockoutMatchId";
 import type { BracketRoundKey } from "@/types/bracket";
 import type { Group, Match, Team } from "@/types";
 
@@ -22,7 +26,9 @@ export function getKnockoutMatches(matches: Match[]): Match[] {
 }
 
 const ROUND_OF_32_IDS = new Set(
-  BRACKET_MATCHES.filter((def) => def.round === "r32").map((def) => def.id),
+  BRACKET_MATCHES.filter((def) => def.round === "r32").map((def) =>
+    normalizeKnockoutMatchId(def.id),
+  ),
 );
 
 /** Teams that appear in the Round of 32 draw from live match data. */
@@ -30,11 +36,11 @@ export function getRoundOf32Teams(matches: Match[]): Team[] {
   const teams = new Map<string, Team>();
 
   for (const match of matches) {
-    const matchId = match.id.toUpperCase();
+    const matchId = normalizeKnockoutMatchId(match.id);
     if (!ROUND_OF_32_IDS.has(matchId)) continue;
 
     for (const team of [match.homeTeam, match.awayTeam]) {
-      if (team.name !== "TBD" && team.id) {
+      if (team.name !== "TBD" && team.id && team.id !== "0") {
         teams.set(team.id, team);
       }
     }
@@ -58,14 +64,12 @@ export function getActualThirdPlaceQualifiers(
 export function getActiveKnockoutRound(
   matches: Match[],
 ): BracketRoundKey | undefined {
-  const liveMatchMap = new Map(
-    getKnockoutMatches(matches).map((match) => [match.id.toUpperCase(), match]),
-  );
+  const liveMatchMap = buildKnockoutMatchMap(getKnockoutMatches(matches));
 
   for (const round of ["r32", "r16", "qf", "sf", "final"] as BracketRoundKey[]) {
     const roundDefs = BRACKET_MATCHES.filter((def) => def.round === round);
     const hasUnfinished = roundDefs.some((def) => {
-      const liveMatch = liveMatchMap.get(def.id);
+      const liveMatch = liveMatchMap.get(normalizeKnockoutMatchId(def.id));
       return !liveMatch || liveMatch.status !== "finished";
     });
     if (hasUnfinished) return round;
