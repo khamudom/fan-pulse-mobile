@@ -12,13 +12,20 @@ import {
   type BracketMode,
 } from "@/components/WorldCupBracket";
 import { GroupStagePredictor } from "./GroupStagePredictor";
+import { GroupStageResults } from "./GroupStageResults";
+import { KnockoutAdvancers } from "./KnockoutAdvancers";
 import { mockMostPickedChampion } from "@/data/mockPredictions";
+import { scoreGroupPredictions } from "@/lib/groupPredictionScore";
 import {
   cascadeBracketPicks,
   getChampionFromPicks,
   getThirdPlaceCandidates,
   MAX_THIRD_PLACE_QUALIFIERS,
 } from "@/lib/bracket";
+import {
+  getRoundOf32Teams,
+  isGroupStageComplete,
+} from "@/lib/tournamentPhase";
 import type {
   BracketPredictionPayload,
   BracketWinnerPicks,
@@ -44,8 +51,16 @@ export function PredictorExperience({
   isSignedIn,
   savedBracket,
 }: PredictorExperienceProps) {
+  const knockoutPhase = isGroupStageComplete(matches);
+  const roundOf32Teams = useMemo(
+    () => (knockoutPhase ? getRoundOf32Teams(matches) : []),
+    [knockoutPhase, matches],
+  );
+
   const [submitted, setSubmitted] = useState(false);
-  const [bracketMode, setBracketMode] = useState<BracketMode>("picks");
+  const [bracketMode, setBracketMode] = useState<BracketMode>(
+    knockoutPhase ? "live" : "picks",
+  );
   const [picks, setPicks] = useState<BracketWinnerPicks>(
     savedBracket?.winners ?? {},
   );
@@ -58,6 +73,19 @@ export function PredictorExperience({
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [isSaving, startSaving] = useTransition();
+
+  const groupScore = useMemo(
+    () =>
+      knockoutPhase
+        ? scoreGroupPredictions(
+            groupRankings,
+            thirdPlaceQualifiers,
+            groups,
+            matches,
+          )
+        : null,
+    [knockoutPhase, groupRankings, thirdPlaceQualifiers, groups, matches],
+  );
 
   const championFromBracket = useMemo(
     () => getChampionFromPicks(picks, teams),
@@ -155,28 +183,37 @@ export function PredictorExperience({
       <section aria-labelledby="group-predictions">
         <div className={styles.sectionHeader}>
           <h2 id="group-predictions" className={styles.sectionTitle}>
-            Group Stage Predictions
+            {knockoutPhase ? "Group Stage Results" : "Group Stage Predictions"}
           </h2>
           <DataSourceBadge
             source={toDataSourceBadge(matchSource, matches.length > 0)}
           />
         </div>
         <p className={styles.sectionDesc}>
-          Group advancement is decided by final standings, not knockout games.
-          Predict where each team finishes, then build your knockout bracket
-          below.
+          {knockoutPhase
+            ? "See how your group-stage predictions stacked up against the final standings."
+            : "Group advancement is decided by final standings, not knockout games. Predict where each team finishes, then build your knockout bracket below."}
         </p>
-        <GroupStagePredictor
-          groups={groups}
-          teams={teams}
-          rankings={groupRankings}
-          thirdPlaceQualifiers={thirdPlaceQualifiers}
-          maxThirds={MAX_THIRD_PLACE_QUALIFIERS}
-          onRankTeam={handleRankTeam}
-          onResetGroup={handleResetGroup}
-          onToggleThird={handleToggleThird}
-        />
+
+        {knockoutPhase && groupScore ? (
+          <GroupStageResults score={groupScore} />
+        ) : (
+          <GroupStagePredictor
+            groups={groups}
+            teams={teams}
+            rankings={groupRankings}
+            thirdPlaceQualifiers={thirdPlaceQualifiers}
+            maxThirds={MAX_THIRD_PLACE_QUALIFIERS}
+            onRankTeam={handleRankTeam}
+            onResetGroup={handleResetGroup}
+            onToggleThird={handleToggleThird}
+          />
+        )}
       </section>
+
+      {knockoutPhase && roundOf32Teams.length > 0 && (
+        <KnockoutAdvancers teams={roundOf32Teams} />
+      )}
 
       <section
         className={styles.bracketSection}
@@ -185,23 +222,23 @@ export function PredictorExperience({
         <div className={styles.bracketHeader}>
           <div>
             <h2 id="knockout-bracket" className={styles.sectionTitle}>
-              Knockout Bracket
+              {knockoutPhase ? "Live Knockout Bracket" : "Knockout Bracket"}
             </h2>
             <p className={styles.sectionDesc}>
-              Seeded from your group predictions. Tap teams to advance them
-              through each round — March Madness style. Switch to Live Bracket
-              to follow real results.
+              {knockoutPhase
+                ? "Follow the tournament as it unfolds. Switch to My Picks to compare your saved bracket against live results."
+                : "Seeded from your group predictions. Tap teams to advance them through each round — March Madness style. Switch to Live Bracket to follow real results."}
             </p>
           </div>
           <div className={styles.bracketActions}>
             <DataSourceBadge
-            source={toDataSourceBadge(matchSource, matches.length > 0)}
-          />
+              source={toDataSourceBadge(matchSource, matches.length > 0)}
+            />
             <BracketModeToggle mode={bracketMode} onChange={setBracketMode} />
           </div>
         </div>
 
-        {!isSignedIn && bracketMode === "picks" && (
+        {!isSignedIn && bracketMode === "picks" && !knockoutPhase && (
           <Alert className={styles.signInAlert}>
             You can preview picks here. <Link href="/login">Sign in</Link> to
             save your bracket.
@@ -216,10 +253,15 @@ export function PredictorExperience({
           picks={picks}
           groupRankings={groupRankings}
           thirdPlaceQualifiers={thirdPlaceQualifiers}
-          onPickWinner={bracketMode === "picks" ? handlePickWinner : undefined}
+          onPickWinner={
+            bracketMode === "picks" && !knockoutPhase
+              ? handlePickWinner
+              : undefined
+          }
+          knockoutPhase={knockoutPhase}
         />
 
-        {bracketMode === "picks" && (
+        {bracketMode === "picks" && !knockoutPhase && (
           <div className={styles.saveRow}>
             <Button onClick={handleSaveBracket} disabled={isSaving}>
               {isSaving ? "Saving..." : "Save Bracket Picks"}
@@ -238,6 +280,12 @@ export function PredictorExperience({
               </p>
             )}
           </div>
+        )}
+
+        {knockoutPhase && bracketMode === "picks" && championFromBracket && (
+          <p className={styles.stat}>
+            Your predicted champion: <strong>{championFromBracket.name}</strong>
+          </p>
         )}
 
         {saveError && (

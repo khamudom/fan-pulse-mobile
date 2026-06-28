@@ -403,16 +403,13 @@ export function buildBracketState(options: {
           thirdPlaceQualifiers,
         );
 
-  const matchStates = BRACKET_MATCHES.filter((def) => def.round !== "third").map(
-    (def) =>
-      buildMatchState(
-        def,
-        resolved,
-        liveMatchMap.get(def.id),
-        mode,
-        picks,
-        teams,
-      ),
+  const matchStates = buildAllMatchStates(
+    resolved,
+    liveMatchMap,
+    mode,
+    picks,
+    teams,
+    false,
   );
 
   const rounds = BRACKET_ROUND_ORDER.map((roundKey) => ({
@@ -425,6 +422,80 @@ export function buildBracketState(options: {
   const champion = finalMatch?.winner;
 
   return { rounds, champion };
+}
+
+function buildAllMatchStates(
+  resolved: Map<string, BracketParticipant>,
+  liveMatchMap: Map<string, Match>,
+  mode: "live" | "picks",
+  picks: BracketWinnerPicks,
+  teams: Team[],
+  includeThirdPlace: boolean,
+): BracketMatchState[] {
+  const defs = BRACKET_MATCHES.filter(
+    (def) => def.round !== "third" || includeThirdPlace,
+  );
+
+  return defs.map((def) =>
+    buildMatchState(
+      def,
+      resolved,
+      liveMatchMap.get(def.id),
+      mode,
+      picks,
+      teams,
+    ),
+  );
+}
+
+export function buildBracketMatchMap(options: {
+  mode: "live" | "picks";
+  matches?: Match[];
+  groups?: Group[];
+  teams?: Team[];
+  picks?: BracketWinnerPicks;
+  groupRankings?: GroupRankings;
+  thirdPlaceQualifiers?: string[];
+  includeThirdPlace?: boolean;
+}): Map<string, BracketMatchState> {
+  const {
+    mode,
+    matches = [],
+    groups = [],
+    teams = [],
+    picks = {},
+    groupRankings = {},
+    thirdPlaceQualifiers = [],
+    includeThirdPlace = false,
+  } = options;
+
+  const liveMatchMap = new Map(
+    matches
+      .filter((match) => match.type && match.type !== "group")
+      .map((match) => [match.id.toUpperCase(), match]),
+  );
+
+  const resolved =
+    mode === "live"
+      ? buildLiveResolvedParticipants(matches)
+      : buildPickResolvedParticipants(
+          picks,
+          teams,
+          groups,
+          groupRankings,
+          thirdPlaceQualifiers,
+        );
+
+  const matchStates = buildAllMatchStates(
+    resolved,
+    liveMatchMap,
+    mode,
+    picks,
+    teams,
+    includeThirdPlace,
+  );
+
+  return new Map(matchStates.map((match) => [match.id, match]));
 }
 
 export function normalizeBracketPayload(value: unknown): BracketPredictionPayload {
@@ -490,6 +561,37 @@ export function getChampionFromPicks(
 }
 
 /** First knockout match the user can still pick in picks mode. */
+export function getKnockoutPickScore(
+  picks: BracketWinnerPicks,
+  matches: Match[],
+): { correct: number; decided: number; total: number } {
+  const liveMatchMap = new Map(
+    matches
+      .filter((match) => match.type && match.type !== "group")
+      .map((match) => [match.id.toUpperCase(), match]),
+  );
+
+  const knockoutMatches = BRACKET_MATCHES.filter((match) => match.round !== "third");
+  let correct = 0;
+  let decided = 0;
+
+  for (const def of knockoutMatches) {
+    const pickedTeamId = picks[def.id];
+    if (!pickedTeamId) continue;
+
+    const liveMatch = liveMatchMap.get(def.id);
+    if (!liveMatch || liveMatch.status !== "finished") continue;
+
+    decided += 1;
+    const winner = winnerFromMatch(liveMatch);
+    if (winner?.team?.id === pickedTeamId) {
+      correct += 1;
+    }
+  }
+
+  return { correct, decided, total: knockoutMatches.length };
+}
+
 export function getNextPickableMatchId(
   matches: Match[],
   groups: Group[],

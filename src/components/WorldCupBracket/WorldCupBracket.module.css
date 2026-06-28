@@ -11,7 +11,8 @@
   color: var(--color-text);
 }
 
-.picksGuide {
+.picksGuide,
+.liveGuide {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -24,178 +25,246 @@
   max-width: 42rem;
 }
 
-.bracketScroll {
-  overflow-x: auto;
-  padding-bottom: var(--space-4);
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(244, 236, 218, 0.12);
+  background: rgba(15, 31, 24, 0.6);
 }
 
-.bracketGrid {
-  display: flex;
-  gap: var(--space-4);
-  min-width: max-content;
-  align-items: stretch;
-}
-
-.roundColumn {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  min-width: 11.5rem;
-}
-
-.roundTitle {
-  margin: 0;
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+.tab {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
   color: var(--color-text-muted);
-  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
 }
 
-.roundMatches {
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tabActive {
+  background: rgba(217, 164, 65, 0.15);
+  color: var(--color-trophy-gold-light);
+}
+
+.panelScroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  max-height: min(70vh, 820px);
+  padding-right: var(--space-1);
+}
+
+.progressionPanel {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  gap: var(--space-5);
+  padding-bottom: var(--space-2);
+}
+
+.feederRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.25rem minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.feederSources {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-3);
-  flex: 1;
-  min-height: calc(var(--match-count, 1) * 5.5rem);
 }
 
-.matchCard {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+.feederDestination {
+  display: flex;
+  align-items: center;
+}
+
+.connector,
+.finalConnector {
+  color: rgba(244, 236, 218, 0.28);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  min-height: 6.5rem;
+}
+
+.connectorSvg {
+  width: 100%;
+  height: 100%;
+  min-height: 5.5rem;
+}
+
+.compactCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
   border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border: 1px solid rgba(244, 236, 218, 0.12);
+  background: rgba(15, 31, 24, 0.85);
+  min-height: 4.75rem;
 }
 
-.matchCardPickable {
+.compactCardPickable {
   border-color: rgba(59, 130, 246, 0.35);
 }
 
-.matchCardHighlighted {
-  border-color: rgba(59, 130, 246, 0.8);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+.compactCardHighlighted {
+  border-color: rgba(59, 130, 246, 0.75);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.18);
 }
 
-.matchCardPicked {
-  border-color: rgba(22, 163, 74, 0.4);
+.compactCardPicked {
+  border-color: rgba(22, 163, 74, 0.45);
 }
 
-.matchHeader {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid var(--color-border);
+.compactCardFinal {
+  border-color: rgba(217, 164, 65, 0.65);
+  box-shadow: 0 0 0 1px rgba(217, 164, 65, 0.2);
 }
 
-.matchId {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--color-text-muted);
+.compactCardThird {
+  border-color: rgba(234, 120, 50, 0.65);
+  box-shadow: 0 0 0 1px rgba(234, 120, 50, 0.18);
 }
 
-.pickHint {
-  font-size: 0.65rem;
-  color: rgba(59, 130, 246, 0.9);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.matchDate {
-  font-size: 0.65rem;
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.matchBody {
+.compactTeams {
   display: flex;
   flex-direction: column;
+  gap: var(--space-2);
 }
 
-.participant {
+.compactTeamRow {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   width: 100%;
-  padding: var(--space-2) var(--space-3);
+  padding: 0;
   border: none;
   background: transparent;
   color: inherit;
-  text-align: left;
   font: inherit;
+  text-align: left;
 }
 
-.participant + .participant {
-  border-top: 1px solid var(--color-border);
-}
-
-.participantSelectable {
+.compactTeamSelectable {
   cursor: pointer;
+  border-radius: var(--radius-sm);
 }
 
-.participantSelectable:hover {
+.compactTeamSelectable:hover {
   background: rgba(59, 130, 246, 0.1);
 }
 
-.participantSelected {
-  background: rgba(59, 130, 246, 0.18);
-  font-weight: 600;
+.compactTeamSelected {
+  background: rgba(59, 130, 246, 0.16);
 }
 
-.participantDimmed {
+.compactTeamDimmed {
   opacity: 0.45;
 }
 
-.advanceMark {
-  color: rgba(59, 130, 246, 0.95);
-  font-size: 0.65rem;
-  flex-shrink: 0;
-}
-
-.participantWinner {
-  background: rgba(22, 163, 74, 0.08);
+.compactTeamWinnerRow {
   font-weight: 600;
 }
 
-.participantPlaceholder .participantName {
-  color: var(--color-text-muted);
-  font-style: italic;
+.compactFlag,
+.compactFlagPlaceholder {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  object-fit: cover;
 }
 
-.participantName {
+.compactFlagPlaceholder {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.compactFlagDotted {
+  border: 1px dashed rgba(244, 236, 218, 0.35);
+  background: transparent;
+}
+
+.compactTeamName {
   flex: 1;
   font-size: var(--text-sm);
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
-.score {
-  font-weight: 700;
+.compactTeamWinner {
+  color: var(--color-trophy-gold-light);
+}
+
+.compactTeamPlaceholder {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.compactScore {
   font-size: var(--text-sm);
+  font-weight: 700;
 }
 
-.flag,
-.flagPlaceholder {
-  width: 1.25rem;
-  height: 0.875rem;
-  border-radius: 2px;
-  flex-shrink: 0;
+.compactSchedule {
+  margin: 0;
+  align-self: flex-end;
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  line-height: 1.2;
 }
 
-.flagPlaceholder {
-  display: inline-block;
-  background: var(--color-border);
+.finalPanel {
+  padding-bottom: var(--space-2);
 }
 
-.matchFooter {
-  padding: var(--space-2) var(--space-3);
-  border-top: 1px solid var(--color-border);
+.finalGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.25rem minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.finalSemis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.thirdPlaceBlock,
+.finalMatchBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.thirdPlaceLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(234, 120, 50, 0.95);
+}
+
+.finalLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-trophy-gold-light);
 }
 
 .championBanner {
@@ -221,8 +290,14 @@
   gap: var(--space-2);
 }
 
-@media (min-width: 1024px) {
-  .roundColumn {
-    min-width: 13rem;
+@media (min-width: 640px) {
+  .feederRow,
+  .finalGrid {
+    grid-template-columns: minmax(0, 1fr) 1.75rem minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .compactCard {
+    min-height: 5rem;
   }
 }

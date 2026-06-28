@@ -3,6 +3,7 @@ import { EmptyState } from "@/components/feedback/EmptyState";
 import { PredictorExperience } from "@/components/PredictorExperience";
 import { USE_PROTOTYPE_DATA } from "@/config/dataSource";
 import { getAuthContext } from "@/lib/auth";
+import { isGroupStageComplete } from "@/lib/tournamentPhase";
 import { getGroups, getMatches, getTeams } from "@/services/worldCupApi";
 
 export async function PredictorExperienceAsync() {
@@ -15,11 +16,30 @@ export async function PredictorExperienceAsync() {
       getMyBracketPrediction(),
     ]);
 
-  if (!USE_PROTOTYPE_DATA) {
+  const knockoutPhase = isGroupStageComplete(matchesResult.data);
+  const hasLiveData =
+    matchesResult.data.length > 0 && groupsResult.data.length > 0;
+
+  if (!USE_PROTOTYPE_DATA && !knockoutPhase) {
     return (
       <EmptyState
         title="Predictor uses prototype data"
-        message="Enable USE_PROTOTYPE_DATA in src/config/dataSource.ts to preview polls and bracket picks. Match, team, and stadium pages show live API data."
+        message="Enable USE_PROTOTYPE_DATA in src/config/dataSource.ts to preview polls and bracket picks before the knockout stage. Match, team, and stadium pages show live API data."
+        actionLabel="View matches"
+        actionHref="/matches"
+      />
+    );
+  }
+
+  if (knockoutPhase && !hasLiveData) {
+    return (
+      <EmptyState
+        title="Knockout data unavailable"
+        message={
+          matchesResult.error ??
+          groupsResult.error ??
+          "World Cup knockout data is not available right now. Try again shortly."
+        }
         actionLabel="View matches"
         actionHref="/matches"
       />

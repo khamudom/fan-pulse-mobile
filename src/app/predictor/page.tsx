@@ -12,7 +12,7 @@ export default function PredictorPage() {
     <div className="page">
       <Hero
         title="World Cup Predictor"
-        subtitle="Build your World Cup picks and choose your champion."
+        subtitle="Build your picks, review group results, and follow the live knockout bracket."
         compact
       />
       <section className="section">
